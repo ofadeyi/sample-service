@@ -16,7 +16,9 @@ public class SampleController {
 
     @RequestMapping("/hello")
     public String hello(){
+
         LOG.debug(" DEBUG = Called /sample/hello endpoint");
-        return "Hello";
+        String aaa = null;
+        return aaa.toString();
     }
 }
