@@ -1,5 +1,6 @@
 package uk.co.whitbread.sample.service;
 
+import org.springframework.stereotype.Service;
 import uk.co.whitbread.sample.model.SampleResponse;
 
 import java.util.stream.Stream;
@@ -9,6 +10,7 @@ import static java.util.stream.Collectors.joining;
 /**
  * Created by Oleksandr Murha on 07/11/2016.
  */
+@Service
 public class SampleService {
 
     public SampleResponse getResponse(String sampleString, String sampleDate, boolean sampleBoolean) {
