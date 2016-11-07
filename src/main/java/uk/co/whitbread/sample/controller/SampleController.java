@@ -1,7 +1,7 @@
 package uk.co.whitbread.sample.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SampleController {
 
-    private static final Logger LOG = LogManager.getLogger(SampleController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SampleController.class);
 
     @RequestMapping("/hello")
     public String hello(){
