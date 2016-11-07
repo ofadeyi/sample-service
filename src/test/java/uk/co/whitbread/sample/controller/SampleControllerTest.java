@@ -17,6 +17,7 @@ import uk.co.whitbread.sample.service.SampleService;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -49,7 +50,7 @@ public class SampleControllerTest {
 
         //When
         mockMvc.perform(get("/sample/endpoint")
-                .param("sampleString", "test strin")
+                .param("sampleString", "test string")
                 .param("sampleDate", "2016-11-20")
                 .param("sampleBoolean", "true"))
                 .andExpect(status().isOk())
@@ -71,7 +72,7 @@ public class SampleControllerTest {
 
         //When
         mockMvc.perform(get("/sample/endpoint")
-                .param("sampleString", "test strin")
+                .param("sampleString", "test string")
                 .param("sampleDate", "2016-11-20")
                 .param("sampleBoolean", "true"))
                 .andExpect(status().isNotFound())
@@ -87,12 +88,29 @@ public class SampleControllerTest {
 
         //When
         mockMvc.perform(get("/sample/endpoint")
-                .param("sampleString", "test strin")
+                .param("sampleString", "test string")
                 .param("sampleDate", "2016-11-20")
                 .param("sampleBoolean", "true"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.code", is(equalTo("999"))))
                 .andExpect(jsonPath("$.details", hasItem("This is an internal error message")));
+    }
+
+    @Test
+    public void shouldHandleValidationError() throws Exception {
+        //Given
+        when(mockSampleService.getResponse(anyString(), anyString(), anyBoolean()))
+                .thenThrow(new RuntimeException("This is an internal error message"));
+
+        //When
+        mockMvc.perform(get("/sample/endpoint")
+                .param("sampleDate", "2016-NOV-20"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code", is(equalTo("001"))))
+                .andExpect(jsonPath("$.details", hasSize(3)))
+                .andExpect(jsonPath("$.details", hasItem("sampleDate must be in correct date format")))
+                .andExpect(jsonPath("$.details", hasItem("sampleBoolean may not be null")))
+                .andExpect(jsonPath("$.details", hasItem("sampleString may not be empty")));
     }
 
     private SampleResponse creteOkResponse() {

@@ -1,13 +1,22 @@
 package uk.co.whitbread.sample.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import uk.co.whitbread.sample.validation.DateFormat;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by Oleksandr Murha on 07/11/2016.
  */
 public class SampleRequest {
 
+    @NotEmpty
     private String sampleString;
+    @DateFormat("yyyy-MM-dd")
+    @NotEmpty
     private String sampleDate;
-    private boolean sampleBoolean;
+    @NotNull
+    private Boolean sampleBoolean;
 
     public String getSampleString() {
         return sampleString;
@@ -25,11 +34,11 @@ public class SampleRequest {
         this.sampleDate = sampleDate;
     }
 
-    public boolean isSampleBoolean() {
+    public Boolean getSampleBoolean() {
         return sampleBoolean;
     }
 
-    public void setSampleBoolean(boolean sampleBoolean) {
+    public void setSampleBoolean(Boolean sampleBoolean) {
         this.sampleBoolean = sampleBoolean;
     }
 
