@@ -1,6 +1,10 @@
 server:
   port: 9020
 
+swagger:
+  api:
+    version: @project.version@
+
 info:
   build:
     groupId: @project.groupId@
