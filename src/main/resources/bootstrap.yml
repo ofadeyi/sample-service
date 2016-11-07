@@ -12,6 +12,9 @@ spring:
 encrypt:
   failOnError: false
 
+logging:
+  config: classpath:log4j2-elk.yml
+
 ---
 spring:
   profiles: local
@@ -27,6 +30,9 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
+
+logging:
+  config: classpath:log4j2.yml
 
 ---
 spring:

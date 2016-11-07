@@ -1,0 +1,20 @@
+Configuration:
+  status: warn
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5p %c{10}:%L - %m%n"
+    Socket:
+      name: Elk
+      port: 3456
+      host: elk
+      reconnectionDelayMillis: 10000
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        ref: Console, Elk

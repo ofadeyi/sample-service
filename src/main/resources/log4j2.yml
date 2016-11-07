@@ -1,0 +1,22 @@
+Configuration:
+  status: warn
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5p %c{10}:%L - %m%n"
+
+  Loggers:
+    Logger:
+      name: uk.co.whitbread
+      level: debug
+      additivity: false
+      AppenderRef:
+        ref: Console
+    Root:
+      level: info
+      additivity: false
+      AppenderRef:
+        ref: Console

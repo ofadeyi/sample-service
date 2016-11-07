@@ -17,4 +17,7 @@ All services should:
          commit:
            id: @git.commit.id@
            time: @git.commit.time@
-           message: @git.commit.message.short@```
+           message: @git.commit.message.short@
+```
+
+* have its own package, ex. uk.co.whitbread.sample
