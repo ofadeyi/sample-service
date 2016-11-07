@@ -10,14 +10,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.co.whitbread.sample.TestConfiguration;
+import uk.co.whitbread.sample.exception.AbstractMALException;
 import uk.co.whitbread.sample.model.SampleResponse;
 import uk.co.whitbread.sample.service.SampleService;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -54,6 +55,44 @@ public class SampleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is(equalTo("OK"))))
                 .andExpect(jsonPath("$.response", is(equalTo("test string - 2016-11-20 - true"))));
+    }
+
+
+    @Test
+    public void shouldGetNokResponse() throws Exception {
+        //Given
+        when(mockSampleService.getResponse(anyString(), anyString(), anyBoolean()))
+                .thenThrow(new AbstractMALException("This is an error message") {
+                    @Override
+                    public String getErrorCode() {
+                        return "001";
+                    }
+                });
+
+        //When
+        mockMvc.perform(get("/sample/endpoint")
+                .param("sampleString", "test strin")
+                .param("sampleDate", "2016-11-20")
+                .param("sampleBoolean", "true"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is(equalTo("001"))))
+                .andExpect(jsonPath("$.details", hasItem("This is an error message")));
+    }
+
+    @Test
+    public void shouldHandleInternalServerError() throws Exception {
+        //Given
+        when(mockSampleService.getResponse(anyString(), anyString(), anyBoolean()))
+                .thenThrow(new RuntimeException("This is an internal error message"));
+
+        //When
+        mockMvc.perform(get("/sample/endpoint")
+                .param("sampleString", "test strin")
+                .param("sampleDate", "2016-11-20")
+                .param("sampleBoolean", "true"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.code", is(equalTo("999"))))
+                .andExpect(jsonPath("$.details", hasItem("This is an internal error message")));
     }
 
     private SampleResponse creteOkResponse() {
