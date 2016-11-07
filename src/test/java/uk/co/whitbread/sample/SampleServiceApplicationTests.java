@@ -1,4 +1,4 @@
-package uk.co.whitbread;
+package uk.co.whitbread.sample;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

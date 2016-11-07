@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: sample
+  cloud:
+    enabled: true
+    config:
+      fail-fast: true
+      discovery:
+        enabled: true
+        serviceId: configserver
+
+encrypt:
+  failOnError: false
+
+---
+spring:
+  profiles: local
+  cloud:
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+    bus:
+      enabled: false
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+
+---
+spring:
+  profiles: uat
+  cloud:
+    config:
+      username: config
+      password: 1234
+
+eureka:
+  instance:
+    preferIpAddress: true
+    ip-address: "${DOCKER_HOST_IP_LOCAL}"
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/
+
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      username: config
+      password: PztZ27NGSjvkh
+
+eureka:
+  instance:
+    preferIpAddress: true
+    ip-address: "${DOCKER_HOST_IP_LOCAL}"
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/
