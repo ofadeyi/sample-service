@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ErrorBean {
+public class ErrorResponse {
     @ApiModelProperty(example = "001", required = true)
     private String code;
 
@@ -14,7 +14,7 @@ public class ErrorBean {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> details = new ArrayList<>();
 
-    public ErrorBean(String code, List<String> details) {
+    public ErrorResponse(String code, List<String> details) {
         this.code = code;
         this.details = details;
     }
@@ -37,7 +37,7 @@ public class ErrorBean {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("ErrorBean{");
+        final StringBuffer sb = new StringBuffer("ErrorResponse{");
         sb.append("code='").append(code).append('\'');
         sb.append(", details=").append(details);
         sb.append('}');

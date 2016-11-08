@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import uk.co.whitbread.sample.model.ErrorBean;
+import uk.co.whitbread.sample.model.ErrorResponse;
 import uk.co.whitbread.sample.model.SampleRequest;
 import uk.co.whitbread.sample.model.SampleResponse;
 import uk.co.whitbread.sample.service.SampleService;
@@ -34,9 +34,9 @@ public class SampleController {
     @ApiOperation(value = "getResponse", notes = "Retrieves Sample Response")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = SampleResponse.class),
-            @ApiResponse(code = 400, message = "Error Occurred ", response = ErrorBean.class),
-            @ApiResponse(code = 404, message = "Resource Not Found", response = ErrorBean.class),
-            @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorBean.class)})
+            @ApiResponse(code = 400, message = "Error Occurred ", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "Resource Not Found", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorResponse.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sampleString", value = "Sample String", dataType = "string",
                     required = true, defaultValue = "sample", paramType = "query"),

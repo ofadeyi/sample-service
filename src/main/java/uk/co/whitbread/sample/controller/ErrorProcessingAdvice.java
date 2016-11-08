@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uk.co.whitbread.sample.exception.AbstractMALException;
-import uk.co.whitbread.sample.model.ErrorBean;
+import uk.co.whitbread.sample.model.ErrorResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,30 +30,30 @@ public class ErrorProcessingAdvice {
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorBean handleServerException(Exception exception) {
+    public ErrorResponse handleServerException(Exception exception) {
         LOG.error("Processing internal server exception", exception);
-        return new ErrorBean(UNCLASSIFIED_ERROR_CODE, Arrays.asList(exception.getMessage()));
+        return new ErrorResponse(UNCLASSIFIED_ERROR_CODE, Arrays.asList(exception.getMessage()));
     }
 
     @ExceptionHandler(value = AbstractMALException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ErrorBean handleErrorCode(AbstractMALException exception) {
+    public ErrorResponse handleErrorCode(AbstractMALException exception) {
         LOG.error("Processing MAL exception", exception);
-        return new ErrorBean(exception.getErrorCode(), Arrays.asList(exception.getMessage()));
+        return new ErrorResponse(exception.getErrorCode(), Arrays.asList(exception.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ErrorBean handleValidationException(MethodArgumentNotValidException exception) {
+    public ErrorResponse handleValidationException(MethodArgumentNotValidException exception) {
         LOG.error("Processing MethodArgumentNotValidException");
-        return new ErrorBean("001", getValidationErrorDetails(exception.getBindingResult()));
+        return new ErrorResponse("001", getValidationErrorDetails(exception.getBindingResult()));
     }
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ErrorBean handleBindException(BindException exception) {
+    public ErrorResponse handleBindException(BindException exception) {
         LOG.error("Processing BindException");
-        return new ErrorBean(VALIDATION_ERROR_CODE, getValidationErrorDetails(exception));
+        return new ErrorResponse(VALIDATION_ERROR_CODE, getValidationErrorDetails(exception));
     }
 
     private List<String> getValidationErrorDetails(Errors errors){
