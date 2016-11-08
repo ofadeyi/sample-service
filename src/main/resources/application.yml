@@ -16,4 +16,4 @@ info:
       commit:
         id: @git.commit.id@
         time: @git.commit.time@
-        message: @git.commit.message.short@
+        message: '@git.commit.message.short@'
