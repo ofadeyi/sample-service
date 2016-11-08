@@ -1,4 +1,4 @@
-package uk.co.whitbread.sample.controller;
+package uk.co.whitbread.sample.advice;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
