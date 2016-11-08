@@ -46,7 +46,8 @@ public class SampleControllerTest {
     @Test
     public void shouldGetOkResponse() throws Exception {
         //Given
-        when(mockSampleService.getResponse(anyString(), anyString(), anyBoolean())).thenReturn(creteOkResponse());
+        when(mockSampleService.getResponse(anyString(), anyString(), anyBoolean()))
+                .thenReturn(creteOkResponse());
 
         //When
         mockMvc.perform(get("/sample/endpoint")
