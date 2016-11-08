@@ -21,6 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <pmd.version>3.7</pmd.version>
     </properties>
 
     <dependencies>
@@ -72,6 +73,24 @@
                 <artifactId>git-commit-id-plugin</artifactId>
                 <configuration>
                     <generateGitPropertiesFile>false</generateGitPropertiesFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${pmd.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <rulesets>
+                        <ruleset>/codequality/pmd/codesize.xml</ruleset>
+                        <ruleset>/codequality/pmd/naming.xml</ruleset>
+                    </rulesets>
                 </configuration>
             </plugin>
         </plugins>

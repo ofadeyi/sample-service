@@ -19,7 +19,7 @@ public class DateFormatValidator implements ConstraintValidator<DateFormat, Stri
     }
 
     @Override
-    public boolean isValid(String date, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String date, ConstraintValidatorContext validatorContext) {
         if (date == null) return true;
         try {
             LocalDate.parse(date, DateTimeFormatter.ofPattern(format));

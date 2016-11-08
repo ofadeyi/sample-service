@@ -66,6 +66,8 @@ public class SampleServiceTest {
         //Then
         exception.expect(RuntimeException.class);
         exception.expectMessage("Sample Client Exception");
+
+        // When
         sut.getResponse(sampleString, sampleDate, sampleBoolean);
     }
 }
