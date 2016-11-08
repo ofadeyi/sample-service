@@ -12,7 +12,7 @@ public class SampleRequest {
 
     @NotEmpty
     private String sampleString;
-    @DateFormat("yyyy-MM-dd")
+    @DateFormat
     @NotEmpty
     private String sampleDate;
     @NotNull
