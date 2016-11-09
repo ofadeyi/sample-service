@@ -1,0 +1,35 @@
+= Notes for Developer Strategy
+
+== Points
+This are the points to bring up with the guys during the
+
+=== General
+. What level on the Richarson Maturity level should we aim for? (How RESTful should the services be)
+.. Try to follow . link:https://www.w3.org/Provider/Style/URI.html[Cool URIs don't change]
+. Reenable/Fix Jenkins build and setup CI/CD pipelines
+. Evaluate: link:https://reviewable.io/[Reviewable] as a tool for code reviews
+. Move to a Specification first approach for OpenAPI/Swagger instead of annotating controller classes
+.. Any chance in using RAML? main benefit link:https://github.com/nidi3/raml-tester[raml-tester]
+.. Benefits: This will promote link:http://www.martinfowler.com/articles/consumerDrivenContracts.html[consumer-driven contract testing] (link:https://www.thoughtworks.com/radar/techniques[TECHNOLOGY RADAR])
+... Spring has link:https://cloud.spring.io/spring-cloud-contract[Spring Cloud Contract] but for the moment does not use OpenAPI or RAML specifications
+. Use correlation id (maybe investigate spring cloud sleuth)
+. Register all service(s) internal and 3rd parties (like Bart, Redis, ElasticSearch, Mongo, etc...) with the Service Discovery
+. Code coverage level (80, 85, 90)?
+
+=== Code
+NOTE: Please note I try (*as much as possible*) to follow *Clean Code* and link:https://github.com/TheLadders/object-calisthenics[*Object Calisthenics*]
+so most of my points below are based on this coding practices
+
+. Avoid _void_ returns
+. All(most) POJOs should be made immutable and provide an implementation of
+_equals_, _hashcode_ and _toString_
+. Usage of _null_. We should try to avoid using/returning nulls prefer
+using _Optional<T>_ to give more semantic meaning.
+. Usage of _exception(s)_ as control flow. We should try and throw exceptions at the highest possible level in order.
+This ties in with the previous point about _nulls_.
+
+=== Containers/Docker
+. Use a single port inside Dockerfiles (use the compose file to expose that port to the external env)
+. Move the entrypoint.sh into a base image from which other images inherits from
+. Migrate docker-compose files to version 2
+. Usage of semantic labelling for the images following the convention defined link:http://label-schema.org/rc1/[here]
