@@ -81,14 +81,14 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>pmd</goal>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <targetDirectory>target/reporting/pmd</targetDirectory>
-                    <format>html</format>
-                    <includeXmlInSite>true</includeXmlInSite>
+                    <targetDirectory>${project.build.directory}/reporting/pmd</targetDirectory>
+                    <format>xml</format>
+                    <failOnViolation>false</failOnViolation>
                     <rulesets>
                         <ruleset>codequality/pmd/codesize.xml</ruleset>
                         <ruleset>codequality/pmd/naming.xml</ruleset>
@@ -99,11 +99,20 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${checkstyle.version}</version>
-                <configuration>
-                    <includeTestResources>false</includeTestResources>
-                    <linkXRef>false</linkXRef>
-                    <failsOnError>false</failsOnError>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <includeTestResources>false</includeTestResources>
+                            <failOnViolation>false</failOnViolation>
+                            <outputFile>${project.build.directory}/reporting/checkstyle/result.xml</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
