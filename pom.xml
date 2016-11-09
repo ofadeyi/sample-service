@@ -50,10 +50,8 @@
                 <version>${docker.plugin.version}</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
+                        <!-- This is just temporary until we define a custom phase for docker build-->
+                        <phase>deploy</phase>
                     </execution>
                 </executions>
                 <configuration>
@@ -82,11 +80,14 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>check</goal>
+                            <goal>pmd</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
+                    <targetDirectory>target/reporting/pmd</targetDirectory>
+                    <format>html</format>
+                    <includeXmlInSite>true</includeXmlInSite>
                     <rulesets>
                         <ruleset>/codequality/pmd/codesize.xml</ruleset>
                         <ruleset>/codequality/pmd/naming.xml</ruleset>
