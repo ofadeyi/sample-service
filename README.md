@@ -6,7 +6,8 @@ All services should:
 * include .gitignore
 * have Dockerfile located at /src/main/docker/Dockerfile
 * include information section in /src/main/resources/application.yml
-```info:
+```
+info:
      build:
        groupId: @project.groupId@
        artifact: @project.artifactId@
@@ -19,5 +20,4 @@ All services should:
            time: @git.commit.time@
            message: @git.commit.message.short@
 ```
-
 * have its own package, ex. uk.co.whitbread.sample
