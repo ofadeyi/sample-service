@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-node {
+node('maven') {
     // Mark the code checkout 'stage'....
     stage 'Checkout'
 
