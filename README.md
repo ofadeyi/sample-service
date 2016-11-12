@@ -6,7 +6,8 @@ All services should:
 * include .gitignore
 * have Dockerfile located at /src/main/docker/Dockerfile
 * include information section in /src/main/resources/application.yml
-```info:
+```
+info:
      build:
        groupId: @project.groupId@
        artifact: @project.artifactId@
