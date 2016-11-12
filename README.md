@@ -20,19 +20,4 @@ info:
            time: @git.commit.time@
            message: @git.commit.message.short@
 ```
-
 * have its own package, ex. uk.co.whitbread.sample
-
-
-
-
-
-
-
-
-
-
-
-
-
-
