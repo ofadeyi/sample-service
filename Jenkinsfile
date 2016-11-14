@@ -23,7 +23,7 @@ node('maven') {
 
     stage('Verify') {
         // Run the maven test
-        sh 'mvn -B -Dmaven.test.failure.ignore verify'
+        sh 'mvn -Dmaven.test.failure.ignore verify'
 
         step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
     }
