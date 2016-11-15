@@ -1,4 +1,6 @@
-node {
+#!/usr/bin/env groovy
+
+node('maven') {
     // Mark the code checkout 'stage'....
     stage 'Checkout'
 
@@ -13,5 +15,9 @@ node {
     // Mark the code build 'stage'....
     stage 'Build'
     // Run the maven build
-    sh "${mvnHome}/bin/mvn clean install"
+    sh "${mvnHome}/bin/mvn clean compile"
+
+    stage 'Test/Verify'
+    // Run the maven build
+    sh "${mvnHome}/bin/mvn test verify"
 }
