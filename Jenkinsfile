@@ -44,6 +44,6 @@ node('maven') {
     }
 
     stage('Docker Build') {
-        sh "sudo docker build --rm=true src/main/docker/."
+        sh "sudo docker build --rm=true --tag=whitbreaddigital/sample-service ."
     }
 }
