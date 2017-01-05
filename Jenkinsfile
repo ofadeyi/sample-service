@@ -44,9 +44,6 @@ node('maven') {
     }
 
     stage('Docker Build') {
-        // Retrieve the global settings.xml
-        configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
-            sh "mvn -s $MAVEN_SETTINGS docker:build"
-        }
+        sh "sudo docker build --rm=true src/main/docker/."
     }
 }
