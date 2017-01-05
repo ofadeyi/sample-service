@@ -42,4 +42,11 @@ node('maven') {
             sh "mvn -s $MAVEN_SETTINGS deploy"
         }
     }
+
+    stage('Docker Build') {
+        // Retrieve the global settings.xml
+        configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+            sh "mvn -s $MAVEN_SETTINGS docker:build"
+        }
+    }
 }
