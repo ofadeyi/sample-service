@@ -2,6 +2,8 @@
 node('maven') {
 
     def mvnHome
+    def pom
+    def version
 
     // Mark the code checkout 'stage'....
     stage('Preparation') {
@@ -13,6 +15,12 @@ node('maven') {
 
         // Add MVN to the path
         env.PATH = "${mvnHome}/bin:${env.PATH}"
+
+        // we want to pick up the version from the pom
+        pom = readMavenPom file: 'pom.xml'
+        version = pom.version.replace("-SNAPSHOT", ".${currentBuild.number}")
+
+        println "The artifact version will be: $version"
     }
 
     // Mark the code build 'stage'....

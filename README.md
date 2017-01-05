@@ -21,3 +21,6 @@ info:
            message: @git.commit.message.short@
 ```
 * have its own package, ex. uk.co.whitbread.sample
+
+Refs: 
+1. [A New Way to Do Continuous Delivery with Maven and Jenkins Pipeline](https://www.cloudbees.com/blog/new-way-do-continuous-delivery-maven-and-jenkins-pipeline)
