@@ -71,7 +71,6 @@ node('maven') {
             sh """
               sudo docker login -u=$USERNAME -p='$PASSWORD'
               sudo docker push whitbreaddigital/sample-service:${version}
-              sudo docker logout
             """
         }
     }
