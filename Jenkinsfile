@@ -5,6 +5,7 @@ node('maven') {
     def pom
     def version
     def branchName
+    def artifactId
 
     // Mark the code checkout 'stage'....
     stage('Preparation') {
@@ -23,7 +24,6 @@ node('maven') {
 
         // Read the POM file and extract the versionNumber
         pom = readMavenPom file: 'pom.xml'
-//        version = branchName.contains('release') ? pom.version :  pom.version.replace("-SNAPSHOT", ".${currentBuild.number}")
         version = branchName.contains('release') ? pom.version : "${pom.version}.${currentBuild.number}"
 
         // Set the artefact version
@@ -62,7 +62,7 @@ node('maven') {
     }
 
     stage('Build Docker image') {
-        sh "sudo docker build --rm=true --tag=whitbreaddigital/sample-service:${version} ."
+        sh "sudo docker build --rm=true --tag=whitbreaddigital/${pom.artifactId}:${version} ."
     }
 
     stage('Deploy image to DockerHub') {
@@ -70,7 +70,8 @@ node('maven') {
                           usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
             sh """
               sudo docker login -u=$USERNAME -p='$PASSWORD'
-              sudo docker push whitbreaddigital/sample-service:${version}
+              sudo docker push whitbreaddigital/${pom.artifactId}:${version}
+              sudo docker logout
             """
         }
     }
