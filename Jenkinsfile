@@ -62,17 +62,21 @@ node('maven') {
     }
 
     stage('Build Docker image') {
-        sh "sudo docker build --rm=true --tag=whitbreaddigital/${pom.artifactId}:${version} ."
+        def artifactCoordinate = "${pom.groupId}/${pom.artifactId}/${version}/${pom.artifactId}-${version}.jar"
+        def artifactDownloadLink = "${pom?.distributionManagement?.repository?.url}/$artifactCoordinate"
+        println "The Artifact Coordinate: $artifactCoordinate"
+        println "The Artifact Download Link: $artifactDownloadLink"
+        sh "sudo docker build --rm=true --build-arg ARTIFACT_DOWNLOAD_LINK=$artifactDownloadLink --tag=whitbreaddigital/${pom.artifactId}:${version} ."
     }
 
-    stage('Deploy image to DockerHub') {
-        withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub',
-                          usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-            sh """
-              sudo docker login -u=$USERNAME -p='$PASSWORD'
-              sudo docker push whitbreaddigital/${pom.artifactId}:${version}
-              sudo docker logout
-            """
-        }
-    }
+//    stage('Deploy image to DockerHub') {
+//        withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub',
+//                          usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+//            sh """
+//              sudo docker login -u=$USERNAME -p='$PASSWORD'
+//              sudo docker push whitbreaddigital/${pom.artifactId}:${version}
+//              sudo docker logout
+//            """
+//        }
+//    }
 }

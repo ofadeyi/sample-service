@@ -10,11 +10,9 @@ MAINTAINER Team Kraken
 #############################################
 VOLUME /tmp
 
-# Copy the jar file from the Maven target folder and renames it
-ADD target/sample-service-*.jar app.jar
-
 # Download the entrypoint script
-RUN bash -c 'touch /app.jar' \
+RUN wget ${ARTIFACT_DOWNLOAD_LINK} -O app.jar \
+    bash -c 'touch /app.jar' \
     wget https://s3-eu-west-1.amazonaws.com/wbroomcontrol/entrypoint.sh -O /usr/local/bin/entrypoint.sh \
     chmod +x /usr/local/bin/entrypoint.sh
 
