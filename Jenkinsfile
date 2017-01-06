@@ -33,7 +33,7 @@ node('maven') {
     }
 
     // Mark the code build 'stage'....
-    stage('Build') {
+    stage('Compile artefact') {
         // Retrieve the global settings.xml
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
             // Run the maven build
@@ -41,7 +41,7 @@ node('maven') {
         }
     }
 
-    stage('Verify') {
+    stage('Verify artefact') {
         // Retrieve the global settings.xml
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
 
@@ -53,7 +53,7 @@ node('maven') {
         }
     }
 
-    stage('Deploy to Nexus') {
+    stage('Deploy artifact to Nexus') {
         // Retrieve the global settings.xml
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
             // Deploy to artefacts repository
@@ -61,7 +61,18 @@ node('maven') {
         }
     }
 
-    stage('Docker Build') {
+    stage('Build Docker image') {
         sh "sudo docker build --rm=true --tag=whitbreaddigital/sample-service:${version} ."
+    }
+
+    stage('Deploy image to DockerHub') {
+        withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub',
+                          usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+            sh """
+              sudo docker login -u=$USERNAME -p='$PASSWORD'
+              sudo docker push whitbreaddigital/sample-service:${version}
+              sudo docker logout
+            """
+        }
     }
 }
