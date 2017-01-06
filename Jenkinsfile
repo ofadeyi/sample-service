@@ -4,6 +4,7 @@ node('maven') {
     def mvnHome
     def pom
     def version
+    def branchName
 
     // Mark the code checkout 'stage'....
     stage('Preparation') {
@@ -16,9 +17,17 @@ node('maven') {
         // Add MVN to the path
         env.PATH = "${mvnHome}/bin:${env.PATH}"
 
-        // we want to pick up the version from the pom
+        // Read the branch name from git
+        sh 'git rev-parse --abbrev-ref HEAD > branchName'
+        branchName = readFile('branchName').trim()
+
+        // Read the POM file and extract the versionNumber
         pom = readMavenPom file: 'pom.xml'
-        version = pom.version.replace("-SNAPSHOT", ".${currentBuild.number}")
+//        version = branchName.contains('release') ? pom.version :  pom.version.replace("-SNAPSHOT", ".${currentBuild.number}")
+        version = branchName.contains('release') ? pom.version : "${pom.version}.${currentBuild.number}"
+
+        // Set the artefact version
+        sh "mvn versions:set -DnewVersion=${version}"
 
         println "The artifact version will be: $version"
     }
@@ -47,11 +56,12 @@ node('maven') {
     stage('Deploy to Nexus') {
         // Retrieve the global settings.xml
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+            // Deploy to artefacts repository
             sh "mvn -s $MAVEN_SETTINGS -Dmaven.test.skip=true deploy"
         }
     }
 
     stage('Docker Build') {
-        sh "sudo docker build --rm=true --tag=whitbreaddigital/sample-service ."
+        sh "sudo docker build --rm=true --tag=whitbreaddigital/sample-service:${version} ."
     }
 }

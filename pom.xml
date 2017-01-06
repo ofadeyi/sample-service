@@ -5,13 +5,13 @@
 
     <groupId>uk.co.whitbread</groupId>
     <artifactId>sample-service</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>uk.co.whitbread</groupId>
         <artifactId>spring-cloud-microservice-parent</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.2.0.93</version>
     </parent>
 
     <name>sample-service</name>
