@@ -10,11 +10,13 @@ MAINTAINER Team Kraken
 #############################################
 VOLUME /tmp
 
-# Download the entrypoint script
-RUN wget ${ARTIFACT_DOWNLOAD_LINK} -O app.jar \
-    bash -c 'touch /app.jar' \
-    wget https://s3-eu-west-1.amazonaws.com/wbroomcontrol/entrypoint.sh -O /usr/local/bin/entrypoint.sh \
-    chmod +x /usr/local/bin/entrypoint.sh
+ARG ARTIFACT_DOWNLOAD_LINK
+
+# Download the jar and the entrypoint script file from the artefact repository and S3
+RUN wget -O app.jar ${ARTIFACT_DOWNLOAD_LINK} \
+    && bash -c 'touch /app.jar' \
+    && wget -O /usr/local/bin/entrypoint.sh https://s3-eu-west-1.amazonaws.com/wbroomcontrol/entrypoint.sh \
+    && chmod +x /usr/local/bin/entrypoint.sh
 
 # Command that will be runned when the container is started
 CMD bash -c 'source /usr/local/bin/entrypoint.sh && java -Djava.security.egd=file:/dev/./urandom -jar /app.jar'
