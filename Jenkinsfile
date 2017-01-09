@@ -32,7 +32,7 @@ node('maven') {
         // Retrieve the global settings.xml
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
 
-            settings = readMavenPom file: "$MAVEN_SETTINGS"
+            settings = readFile file: "$MAVEN_SETTINGS"
 
             println settings
 
