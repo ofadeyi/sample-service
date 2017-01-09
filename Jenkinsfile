@@ -25,19 +25,19 @@ node('maven') {
         // Read the POM file and extract the versionNumber
         pom = readMavenPom file: 'pom.xml'
         version = branchName.contains('release') ? pom.version : "${pom.version}.${currentBuild.number}"
-
-        // Set the artefact version
-        sh "mvn versions:set -DnewVersion=${version}"
-
-        println "The artifact version will be: $version"
     }
 
     // Mark the code build 'stage'....
     stage('Compile artefact') {
         // Retrieve the global settings.xml
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+            // Set the artefact version
+            sh "mvn versions:set -DnewVersion=${version}"
+
+            println "The artifact version will be: $version"
+
             // Run the maven build
-            sh 'mvn -s $MAVEN_SETTINGS clean compile'
+            sh "mvn -s $MAVEN_SETTINGS clean compile"
         }
     }
 
@@ -46,7 +46,7 @@ node('maven') {
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
 
             // Run the maven test
-            sh 'mvn -s $MAVEN_SETTINGS -Dmaven.test.failure.ignore verify'
+            sh "mvn -s $MAVEN_SETTINGS -Dmaven.test.failure.ignore verify"
 
             // Store test results
             step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
