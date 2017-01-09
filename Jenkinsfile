@@ -31,13 +31,18 @@ node('maven') {
     stage('Compile artefact') {
         // Retrieve the global settings.xml
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
-            // Set the artefact version
-            sh "mvn  -s $MAVEN_SETTINGS versions:set -DnewVersion=${version}"
 
-            println "The artifact version will be: $version"
+            settings = readMavenPom file: "$MAVEN_SETTINGS"
 
-            // Run the maven build
-            sh "mvn -s $MAVEN_SETTINGS clean compile"
+            println settings
+
+//            // Set the artefact version
+//            sh "mvn  -s $MAVEN_SETTINGS versions:set -DnewVersion=${version}"
+//
+//            println "The artifact version will be: $version"
+//
+//            // Run the maven build
+//            sh "mvn -s $MAVEN_SETTINGS clean compile"
         }
     }
 
