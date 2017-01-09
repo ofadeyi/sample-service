@@ -37,7 +37,7 @@ node('maven') {
             println settings
 
             // Set the artefact version
-            sh "mvn  -s $MAVEN_SETTINGS -P wbCICD versions:set -DnewVersion=${version}"
+            sh "mvn  -s $MAVEN_SETTINGS -P wbCICD -U versions:set -DnewVersion=${version}"
 
             println "The artifact version will be: $version"
 //
