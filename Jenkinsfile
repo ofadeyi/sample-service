@@ -38,7 +38,7 @@ node('maven') {
             println "The artifact version will be: $version"
 
             // Run the maven build
-            sh "mvn -s $MAVEN_SETTINGS clean compile"
+            sh "mvn -s $MAVEN_SETTINGS -U clean compile"
         }
     }
 
@@ -47,7 +47,7 @@ node('maven') {
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
 
             // Run the maven test
-            sh "mvn -s $MAVEN_SETTINGS -Dmaven.test.failure.ignore verify"
+            sh "mvn -s $MAVEN_SETTINGS -U -Dmaven.test.failure.ignore verify"
 
             // Store test results
             step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
