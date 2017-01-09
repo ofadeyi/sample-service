@@ -70,14 +70,14 @@ node('maven') {
         sh "sudo docker build --rm=true --build-arg ARTIFACT_DOWNLOAD_LINK=$artifactDownloadLink --tag=whitbreaddigital/${pom.artifactId}:${version} ."
     }
 
-//    stage('Deploy image to DockerHub') {
-//        withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub',
-//                          usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-//            sh """
-//              sudo docker login -u=$USERNAME -p='$PASSWORD'
-//              sudo docker push whitbreaddigital/${pom.artifactId}:${version}
-//              sudo docker logout
-//            """
-//        }
-//    }
+    stage('Deploy image to DockerHub') {
+        withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub',
+                          usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+            sh """
+              sudo docker login -u=$USERNAME -p='$PASSWORD'
+              sudo docker push whitbreaddigital/${pom.artifactId}:${version}
+              sudo docker logout
+            """
+        }
+    }
 }
