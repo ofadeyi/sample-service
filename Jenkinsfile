@@ -32,17 +32,13 @@ node('maven') {
         // Retrieve the global settings.xml
         configFileProvider([configFile(fileId: 'wb-mvn-settings', variable: 'MAVEN_SETTINGS')]) {
 
-            settings = readFile file: "$MAVEN_SETTINGS"
-
-            println settings
-
             // Set the artefact version
-            sh "mvn  -s $MAVEN_SETTINGS -P wbCICD -U versions:set -DnewVersion=${version}"
+            sh "mvn  -s $MAVEN_SETTINGS -U versions:set -DnewVersion=${version}"
 
             println "The artifact version will be: $version"
-//
-//            // Run the maven build
-//            sh "mvn -s $MAVEN_SETTINGS clean compile"
+
+            // Run the maven build
+            sh "mvn -s $MAVEN_SETTINGS clean compile"
         }
     }
 
