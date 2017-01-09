@@ -63,7 +63,7 @@ node('maven') {
     }
 
     stage('Build Docker image') {
-        def artifactCoordinate = "${pom.groupId}.replace('.', '/')/${pom.artifactId}/${version}/${pom.artifactId}-${version}.jar"
+        def artifactCoordinate = "${pom.groupId.replace('.', '/')}/${pom.artifactId}/${version}/${pom.artifactId}-${version}.jar"
         def artifactDownloadLink = "${pom.distributionManagement.repository.url}/$artifactCoordinate"
         println "The Artifact Coordinate: $artifactCoordinate"
         println "The Artifact Download Link: $artifactDownloadLink"
