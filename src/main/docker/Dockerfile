@@ -1,4 +1,4 @@
-FROM whitbreaddigital/java:8
+FROM whitbreaddigital/java:8u111
 VOLUME /tmp
 ADD sample-service-*.jar app.jar
 RUN bash -c 'touch /app.jar'
