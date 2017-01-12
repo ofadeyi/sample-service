@@ -1,0 +1,12 @@
+.idea
+.mvn
+codequality
+src
+!target/sample-service-*.jar
+.gitignore
+dev-notes.adoc
+mvnw
+mvnw.cmd
+pom.xml
+README.md
+sample-service.iml
