@@ -3,9 +3,10 @@ node('maven') {
 
     def mvnHome
     def pom
+    def artifactId
     def version
     def branchName
-    def artifactId
+    def releaseBranch = "master"
 
     // Mark the code checkout 'stage'....
     stage('Preparation') {
@@ -19,12 +20,14 @@ node('maven') {
         env.PATH = "${mvnHome}/bin:${env.PATH}"
 
         // Read the branch name from git
-        sh 'git rev-parse --abbrev-ref HEAD > branchName'
+        sh 'git branch -a --contains $(git rev-parse --short HEAD) --merged > branchName'
         branchName = readFile('branchName').trim()
+        println "Releasing from branch: $branchName"
 
         // Read the POM file and extract the versionNumber
         pom = readMavenPom file: 'pom.xml'
-        version = branchName.contains('release') ? pom.version : "${pom.version}.${currentBuild.number}"
+        version = branchName.contains(releaseBranch) ? pom.version : "${pom.version}.${currentBuild.number}"
+        println "The artefact version will be: $version"
     }
 
     // Mark the code build 'stage'....
@@ -34,8 +37,6 @@ node('maven') {
 
             // Set the artefact version
             sh "mvn  -s $MAVEN_SETTINGS -U versions:set -DnewVersion=${version}"
-
-            println "The artifact version will be: $version"
 
             // Run the maven build
             sh "mvn -s $MAVEN_SETTINGS -U clean compile"
